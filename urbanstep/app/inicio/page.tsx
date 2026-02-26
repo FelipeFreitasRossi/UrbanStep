@@ -6,44 +6,8 @@ import Link from 'next/link';
 import { motion, useAnimation, useInView } from 'framer-motion';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-
-const produtos = [
-  {
-    id: 1,
-    nome: 'Nike Air Force 1 \'07',
-    preco: 599.99,
-    imagem: 'https://i.postimg.cc/xdf27KVb/Nike-Air-Force-1-07.png',
-    categoria: 'Casual',
-  },
-  {
-    id: 2,
-    nome: 'Nike Dunk Low Retro',
-    preco: 699.99,
-    imagem: 'https://i.postimg.cc/5y69r8vj/Dunk-Low-Retro.png',
-    categoria: 'Casual',
-  },
-  {
-    id: 3,
-    nome: 'Nike Travis Scott',
-    preco: 499.99,
-    imagem: 'https://i.postimg.cc/TYSvdp5K/Tenis-Travis-Scott.png',
-    categoria: 'Casual',
-  },
-  {
-    id: 4,
-    nome: 'Nike Dunk High Retro',
-    preco: 749.99,
-    imagem: 'https://i.postimg.cc/Jn3dWFNf/Nike-Dunk-High-Retro.png',
-    categoria: 'Casual',
-  },
-  {
-    id: 5,
-    nome: 'Nike Court Vision Low',
-    preco: 399.99,
-    imagem: 'https://i.postimg.cc/XJDBXjkk/Nike-Court-Low-Vision.png',
-    categoria: 'Casual',
-  },
-];
+import ProductCard from '../components/ProductCard';
+import { produtos } from '../data/produtos';
 
 const AnimatedSection = ({ children, className }: { children: React.ReactNode; className?: string }) => {
   const ref = useRef(null);
@@ -138,35 +102,7 @@ export default function InicioPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-8">
               {produtos.slice(0, 3).map((produto) => (
                 <AnimatedSection key={produto.id} className="h-full">
-                  <motion.div
-                    whileHover={{ y: -10, scale: 1.02 }}
-                    transition={{ type: 'spring', stiffness: 300 }}
-                    className="bg-white rounded-2xl shadow-lg overflow-hidden h-full flex flex-col relative group"
-                  >
-                    {/* Selo Nike */}
-                    <div className="absolute top-2 left-2 z-10 bg-black text-white text-xs font-bold px-2 py-1 rounded">
-                      NIKE
-                    </div>
-                    {/* Imagem com zoom no hover */}
-                    <div className="relative h-64 w-full overflow-hidden">
-                      <Image
-                        src={produto.imagem}
-                        alt={produto.nome}
-                        fill
-                        className="object-cover group-hover:scale-110 transition duration-500"
-                      />
-                    </div>
-                    <div className="p-6 flex flex-col flex-grow">
-                      <span className="text-sm text-gray-500">{produto.categoria}</span>
-                      <h3 className="font-bold text-xl mt-1">{produto.nome}</h3>
-                      <p className="text-gray-700 font-semibold mt-2 text-lg">
-                        R$ {produto.preco.toFixed(2)}
-                      </p>
-                      <button className="mt-4 w-full bg-red-600 text-white py-2 rounded-full hover:bg-red-700 transition font-medium">
-                        Comprar via WhatsApp
-                      </button>
-                    </div>
-                  </motion.div>
+                  <ProductCard produto={produto} />
                 </AnimatedSection>
               ))}
             </div>
@@ -231,9 +167,9 @@ export default function InicioPage() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {[
-                { nome: 'Air Force', imagem: 'https://i.postimg.cc/Y0DNKc94/CAPA-AIR-FORCE.png' }, 
+                { nome: 'Air Force', imagem: 'https://i.postimg.cc/Y0DNKc94/CAPA-AIR-FORCE.png' },
                 { nome: 'Dunk', imagem: 'https://i.postimg.cc/pLS29s9Y/CAPA-DUNK.png' },
-                { nome: 'Court', imagem: 'https://i.postimg.cc/L55CZ3gj/CAPA-COURTO-LOW-VISION.png' }, 
+                { nome: 'Court', imagem: 'https://i.postimg.cc/L55CZ3gj/CAPA-COURTO-LOW-VISION.png' },
               ].map((cat) => (
                 <AnimatedSection key={cat.nome} className="relative group h-80 overflow-hidden rounded-2xl shadow-lg">
                   <Image
@@ -246,7 +182,7 @@ export default function InicioPage() {
                   <div className="absolute bottom-0 left-0 right-0 p-6">
                     <h3 className="text-white text-2xl font-bold">{cat.nome}</h3>
                     <Link
-                      href="#"
+                      href={`/categoria/${cat.nome.toLowerCase()}`}
                       className="inline-block mt-2 text-white/90 hover:text-white text-sm font-medium underline underline-offset-2"
                     >
                       Ver modelos →
@@ -258,29 +194,19 @@ export default function InicioPage() {
           </div>
         </section>
 
-        {/* Sobre com imagens responsivas (mobile/desktop) */}
+        {/* Sobre */}
         <section id="sobre" className="py-20 bg-gray-900">
           <div className="container mx-auto px-4">
             <div className="flex flex-col lg:flex-row items-center gap-12">
               <AnimatedSection className="lg:w-1/2">
                 <div className="relative w-full rounded-2xl overflow-hidden shadow-2xl aspect-video md:aspect-auto md:h-96">
-                  <picture>
-                    <source
-                      media="(max-width: 768px)"
-                      srcSet="https://i.postimg.cc/Hk8Q8PZp/Foto-Casal-Mobile.png" 
-                    />
-                    <source
-                      media="(min-width: 769px)"
-                      srcSet="https://i.postimg.cc/CM4JwttH/Foto-Casal.png" 
-                    />
-                    <Image
-                      src="https://i.postimg.cc/CM4JwttH/Foto-Casal.png"
-                      alt="Sobre a UrbanStep"
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 768px) 100vw, 50vw"
-                    />
-                  </picture>
+                  <Image
+                    src="https://i.postimg.cc/CM4JwttH/Foto-Casal.png"
+                    alt="Sobre a UrbanStep"
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                  />
                 </div>
               </AnimatedSection>
               <AnimatedSection className="lg:w-1/2 text-white">

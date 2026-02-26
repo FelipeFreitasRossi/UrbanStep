@@ -2,12 +2,14 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FiMenu, FiX, FiHome, FiStar, FiGrid, FiInfo } from 'react-icons/fi';
+import { FiMenu, FiX } from 'react-icons/fi';
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -17,14 +19,35 @@ const Header = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Fecha o menu ao redimensionar para desktop
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 768) {
+        setIsOpen(false);
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   const navLinks = [
-    { href: '#hero', label: 'Início', icon: FiHome },
-    { href: '#destaques', label: 'Destaques', icon: FiStar },
-    { href: '#categorias', label: 'Categorias', icon: FiGrid },
-    { href: '#sobre', label: 'Sobre', icon: FiInfo },
+    { href: '/inicio', label: 'Início' },
+    { href: '/inicio#destaques', label: 'Destaques' },
+    { href: '/inicio#categorias', label: 'Categorias' },
+    { href: '/sobre', label: 'Sobre' },
   ];
 
-  const handleLinkClick = () => setIsOpen(false);
+  const handleLinkClick = () => {
+    setIsOpen(false);
+  };
+
+  const isActive = (href: string) => {
+    if (href.includes('#')) {
+      const [path] = href.split('#');
+      return pathname === path;
+    }
+    return pathname === href;
+  };
 
   return (
     <>
@@ -33,41 +56,47 @@ const Header = () => {
           scrolled ? 'bg-black/90 backdrop-blur-md shadow-lg' : 'bg-black'
         }`}
       >
-        <div className="container mx-auto px-4 py-3 flex items-center justify-between">
-          {/* Logo branca */}
-          <Link href="/" className="text-2xl font-bold text-white">
-            UrbanStep
-          </Link>
+        <div className="container mx-auto px-4 py-3">
+          <div className="flex items-center justify-between">
+            {/* Logo à esquerda */}
+            <Link href="/inicio" className="text-2xl font-bold text-white">
+              UrbanStep
+            </Link>
 
-          {/* Desktop Menu - links em branco */}
-          <nav className="hidden md:flex space-x-8">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="text-gray-300 hover:text-white transition font-medium"
-              >
-                {link.label}
-              </Link>
-            ))}
-          </nav>
+            {/* Botão hambúrguer à direita (mobile) */}
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="md:hidden text-white focus:outline-none z-50 w-10 h-10 flex items-center justify-center"
+              aria-label="Menu"
+            >
+              {isOpen ? <FiX size={28} /> : <FiMenu size={28} />}
+            </button>
 
-          {/* Mobile Hamburger - ícone branco */}
-          <button
-            onClick={() => setIsOpen(true)}
-            className="md:hidden text-white focus:outline-none"
-            aria-label="Menu"
-          >
-            <FiMenu size={28} />
-          </button>
+            {/* Menu desktop (visível apenas em md+) */}
+            <nav className="hidden md:flex space-x-8">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={`transition font-medium ${
+                    isActive(link.href)
+                      ? 'text-white'
+                      : 'text-gray-300 hover:text-white'
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </nav>
+          </div>
         </div>
       </header>
 
-      {/* Sidebar overlay e menu */}
+      {/* Sidebar mobile (direita) */}
       <AnimatePresence>
         {isOpen && (
           <>
-            {/* Overlay escuro com blur */}
+            {/* Overlay escuro */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -77,16 +106,16 @@ const Header = () => {
               onClick={() => setIsOpen(false)}
             />
 
-            {/* Sidebar propriamente dito */}
+            {/* Menu lateral vindo da direita */}
             <motion.div
-              initial={{ x: '-100%' }}
+              initial={{ x: '100%' }}
               animate={{ x: 0 }}
-              exit={{ x: '-100%' }}
+              exit={{ x: '100%' }}
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className="fixed top-0 left-0 h-full w-64 bg-black z-50 shadow-2xl md:hidden"
+              className="fixed top-0 right-0 h-full w-64 bg-black z-50 shadow-2xl md:hidden"
             >
               <div className="flex flex-col h-full">
-                {/* Cabeçalho do sidebar com logo e botão fechar */}
+                {/* Cabeçalho do menu */}
                 <div className="flex items-center justify-between p-4 border-b border-gray-800">
                   <span className="text-xl font-bold text-white">UrbanStep</span>
                   <button
@@ -99,26 +128,21 @@ const Header = () => {
 
                 {/* Links de navegação */}
                 <nav className="flex flex-col p-4 space-y-2">
-                  {navLinks.map((link) => {
-                    const Icon = link.icon;
-                    return (
-                      <Link
-                        key={link.href}
-                        href={link.href}
-                        onClick={handleLinkClick}
-                        className="flex items-center space-x-3 text-gray-300 hover:text-white hover:bg-gray-900 transition font-medium py-3 px-4 rounded-lg"
-                      >
-                        <Icon size={20} />
-                        <span>{link.label}</span>
-                      </Link>
-                    );
-                  })}
+                  {navLinks.map((link) => (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      onClick={handleLinkClick}
+                      className={`transition font-medium py-3 px-4 rounded-lg ${
+                        isActive(link.href)
+                          ? 'text-white bg-gray-900'
+                          : 'text-gray-300 hover:text-white hover:bg-gray-900'
+                      }`}
+                    >
+                      {link.label}
+                    </Link>
+                  ))}
                 </nav>
-
-                {/* Rodapé do sidebar (opcional) */}
-                <div className="mt-auto p-4 border-t border-gray-800">
-                  <p className="text-sm text-gray-500">© 2024 UrbanStep</p>
-                </div>
               </div>
             </motion.div>
           </>
