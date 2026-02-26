@@ -1,3 +1,11 @@
 [build]
-  command = "next build"
+  command = "npm run build"
   publish = ".next"
+
+[build.environment]
+  NEXT_PRIVATE_TARGET = "server" # importante para o App Router
+
+[[redirects]]
+  from = "/*"
+  to = "/.netlify/functions/next_server"
+  status = 200
