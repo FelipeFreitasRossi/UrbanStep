@@ -1,47 +1,43 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { useAuth } from './context/AuthContext';
+import Link from 'next/link';
 import SplashScreen from './components/SplashScreen';
 import Image from 'next/image';
 
 export default function LandingPage() {
   const [showSplash, setShowSplash] = useState(true);
-  const { user } = useAuth();
-  const router = useRouter();
 
   useEffect(() => {
-    if (user) {
-      router.push('/home');
-    }
-  }, [user, router]);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowSplash(false);
-    }, 1900);
+    const timer = setTimeout(() => setShowSplash(false), 1900);
     return () => clearTimeout(timer);
   }, []);
-
-  if (user) return null;
 
   return (
     <>
       {showSplash && <SplashScreen />}
       {!showSplash && (
         <div className="relative min-h-screen w-full overflow-hidden">
-          {/* Imagem de fundo - sempre cobre toda a tela */}
           <div className="absolute inset-0 z-0">
-            <Image
-              src="https://i.postimg.cc/dQhMx0rv/12Mola-Nike.png"
-              alt="Background UrbanStep"
-              fill
-              className="object-cover object-center"
-              priority
-              sizes="100vw"
-              quality={90}
-            />
+            <picture>
+              <source
+                media="(max-width: 768px)"
+                srcSet="https://i.postimg.cc/Kvf5JJRw/12Mola-Nike-Mobile.png"
+              />
+              <source
+                media="(min-width: 769px)"
+                srcSet="https://i.postimg.cc/0NmHN7yd/12Mola-Nike.png"
+              />
+              <Image
+                src="https://i.postimg.cc/0NmHN7yd/12Mola-Nike.png"
+                alt="Background UrbanStep"
+                fill
+                className="object-cover object-center"
+                priority
+                sizes="100vw"
+                quality={90}
+              />
+            </picture>
             <div className="absolute inset-0 bg-black/50" />
           </div>
 
@@ -55,14 +51,13 @@ export default function LandingPage() {
               </p>
             </div>
 
-            {/* Botão na parte inferior - responsivo */}
             <div className="flex justify-center md:justify-start mb-8 md:mb-16">
-              <button
-                onClick={() => router.push('/cadastro')}
-                className="bg-white text-black px-8 py-4 rounded-full font-semibold text-lg shadow-lg hover:bg-gray-100 transition transform active:scale-95 w-full max-w-xs md:w-auto"
+              <Link
+                href="/inicio"
+                className="bg-white text-black px-8 py-4 rounded-full font-semibold text-lg shadow-lg hover:bg-gray-100 transition transform active:scale-95 w-full max-w-xs md:w-auto inline-block text-center"
               >
-                Me cadastrar
-              </button>
+                Entrar
+              </Link>
             </div>
           </div>
         </div>
