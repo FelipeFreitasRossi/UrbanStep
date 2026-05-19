@@ -9,8 +9,15 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "UrbanStep | Loja de Tênis",
-  description: "Os melhores tênis para todos os estilos.",
+  title: "UrbanStep | Loja de Tênis Nike",
+  description: "Os melhores tênis casuais Nike. Air Force, Dunk, Blazer e mais. Compre pelo WhatsApp.",
+  manifest: "/manifest.json",
+  themeColor: "#000000",
+  viewport: "width=device-width, initial-scale=1",
+  icons: {
+    icon: "/icons/icon-192x192.png",
+    apple: "/icons/icon-512x512.png",
+  },
 };
 
 export default function RootLayout({

@@ -77,7 +77,6 @@ const Image3DViewer = ({ imageUrl, bgColor = '#000000' }: Image3DViewerProps) =>
         <OrbitControls {...controlsConfig} />
       </Canvas>
 
-      {/* Instruções sutis para mobile */}
       {isMobile && (
         <div className="absolute bottom-3 left-0 right-0 text-center text-white/50 text-xs bg-black/50 py-1 backdrop-blur-sm pointer-events-none">
           {/* 👆 Gire com um dedo | ✌️ Zoom com dois dedos */}
