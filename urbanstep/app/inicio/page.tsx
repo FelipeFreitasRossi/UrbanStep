@@ -1,3 +1,4 @@
+// app/inicio/page.tsx
 'use client';
 
 import { useEffect, useRef } from 'react';
@@ -6,9 +7,48 @@ import Link from 'next/link';
 import { motion, useAnimation, useInView } from 'framer-motion';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import ProductCard from '../components/ProductCard';
-import { produtos } from '../data/produtos';
+import Image3DViewer from '../components/Image3DViewer';
 
+// Produtos Nike (apenas casuais)
+const produtos = [
+  {
+    id: 1,
+    nome: 'Nike Air Force 1 \'07',
+    preco: 599.99,
+    imagem: 'https://i.postimg.cc/xdf27KVb/Nike-Air-Force-1-07.png',
+    categoria: 'Casual',
+  },
+  {
+    id: 2,
+    nome: 'Nike Dunk Low Retro',
+    preco: 699.99,
+    imagem: 'https://i.postimg.cc/5y69r8vj/Dunk-Low-Retro.png',
+    categoria: 'Casual',
+  },
+  {
+    id: 3,
+    nome: 'Nike Travis Scott',
+    preco: 499.99,
+    imagem: 'https://i.postimg.cc/TYSvdp5K/Tenis-Travis-Scott.png',
+    categoria: 'Casual',
+  },
+  {
+    id: 4,
+    nome: 'Nike Dunk High Retro',
+    preco: 749.99,
+    imagem: 'https://i.postimg.cc/Jn3dWFNf/Nike-Dunk-High-Retro.png',
+    categoria: 'Casual',
+  },
+  {
+    id: 5,
+    nome: 'Nike Court Vision Low',
+    preco: 399.99,
+    imagem: 'https://i.postimg.cc/XJDBXjkk/Nike-Court-Low-Vision.png',
+    categoria: 'Casual',
+  },
+];
+
+// Componente para animar ao entrar na viewport
 const AnimatedSection = ({ children, className }: { children: React.ReactNode; className?: string }) => {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, amount: 0.3 });
@@ -37,6 +77,9 @@ const AnimatedSection = ({ children, className }: { children: React.ReactNode; c
 };
 
 export default function InicioPage() {
+  // 👇 Substitua esta URL pela URL da sua imagem hospedada (ex: do Postimage)
+  const imagem3DUrl = 'https://i.postimg.cc/seu-caminho/sua-imagem-do-tenis.png';
+
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
@@ -102,14 +145,68 @@ export default function InicioPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-8">
               {produtos.slice(0, 3).map((produto) => (
                 <AnimatedSection key={produto.id} className="h-full">
-                  <ProductCard produto={produto} />
+                  <motion.div
+                    whileHover={{ y: -10, scale: 1.02 }}
+                    transition={{ type: 'spring', stiffness: 300 }}
+                    className="bg-white rounded-2xl shadow-lg overflow-hidden h-full flex flex-col relative group"
+                  >
+                    {/* Selo Nike */}
+                    <div className="absolute top-2 left-2 z-10 bg-black text-white text-xs font-bold px-2 py-1 rounded">
+                      NIKE
+                    </div>
+                    {/* Imagem com zoom no hover */}
+                    <div className="relative h-64 w-full overflow-hidden">
+                      <Image
+                        src={produto.imagem}
+                        alt={produto.nome}
+                        fill
+                        className="object-cover group-hover:scale-110 transition duration-500"
+                      />
+                    </div>
+                    <div className="p-6 flex flex-col flex-grow">
+                      <span className="text-sm text-gray-500">{produto.categoria}</span>
+                      <h3 className="font-bold text-xl mt-1">{produto.nome}</h3>
+                      <p className="text-gray-700 font-semibold mt-2 text-lg">
+                        R$ {produto.preco.toFixed(2)}
+                      </p>
+                      <button className="mt-4 w-full bg-red-600 text-white py-2 rounded-full hover:bg-red-700 transition font-medium">
+                        Comprar via WhatsApp
+                      </button>
+                    </div>
+                  </motion.div>
                 </AnimatedSection>
               ))}
             </div>
           </div>
         </section>
 
-        {/* Lançamentos */}
+        {/* SEÇÃO 3D - TÊNIS EM DESTAQUE COM IMAGEM ESTÁTICA INTERATIVA */}
+        <section className="py-20 bg-gradient-to-r from-black to-gray-900">
+          <div className="container mx-auto px-4">
+            <div className="grid md:grid-cols-2 gap-12 items-center">
+              <AnimatedSection className="text-white">
+                <h2 className="text-4xl md:text-5xl font-bold mb-4">
+                  Explore o novo <span className="text-red-500">Nike Air Max</span> em 3D
+                </h2>
+                <p className="text-gray-300 text-lg mb-6">
+                  Gire, aproxime e veja cada detalhe deste modelo exclusivo. 
+                  Uma experiência imersiva que só a UrbanStep oferece.
+                </p>
+                <button className="bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-8 rounded-full transition transform hover:scale-105">
+                  Comprar agora
+                </button>
+              </AnimatedSection>
+              <AnimatedSection>
+                <Image3DViewer 
+                  imageUrl="https://i.postimg.cc/6QrwLj6V/Gemini-Generated-Image-olrn8rolrn8rolrn.png"
+                  bgColor="#000000"
+                />
+              </AnimatedSection>
+            </div>
+          </div>
+        </section>
+
+        {/* Lançamentos Exclusivos */}
         <section className="py-20 bg-gray-900 text-white">
           <div className="container mx-auto px-4">
             <AnimatedSection>
@@ -182,7 +279,7 @@ export default function InicioPage() {
                   <div className="absolute bottom-0 left-0 right-0 p-6">
                     <h3 className="text-white text-2xl font-bold">{cat.nome}</h3>
                     <Link
-                      href={`/categoria/${cat.nome.toLowerCase()}`}
+                      href="#"
                       className="inline-block mt-2 text-white/90 hover:text-white text-sm font-medium underline underline-offset-2"
                     >
                       Ver modelos →
