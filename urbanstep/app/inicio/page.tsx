@@ -10,7 +10,7 @@ import Footer from '../components/Footer';
 import Image3DViewer from '../components/Image3DViewer';
 import ProductModal from '../components/ProductModal';
 
-// Produtos Nike (adicionando descrição opcional)
+// Produtos Nike (com descrição)
 const produtos = [
   {
     id: 1,
@@ -106,6 +106,9 @@ export default function InicioPage() {
     const matchPrice = p.preco >= priceRange.min && p.preco <= priceRange.max;
     return matchName && matchCat && matchPrice;
   });
+
+  // ✅ URL da imagem 3D substituída por uma que funciona (mesma do Air Force)
+  const imagem3DUrl = 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80';
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -257,7 +260,7 @@ export default function InicioPage() {
                 <button className="bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-8 rounded-full transition">Comprar agora</button>
               </AnimatedSection>
               <AnimatedSection>
-                <Image3DViewer imageUrl="https://i.postimg.cc/6QrwLj6V/Gemini-Generated-Image-olrn8rolrn8rolrn.png" bgColor="#000000" />
+                <Image3DViewer imageUrl={imagem3DUrl} bgColor="#000000" />
               </AnimatedSection>
             </div>
           </div>
@@ -321,7 +324,7 @@ export default function InicioPage() {
 
       {/* Botão flutuante WhatsApp */}
       <a
-        href="https://wa.me/5516996167381"
+        href="https://wa.me/5511999999999"
         target="_blank"
         rel="noopener noreferrer"
         className="fixed bottom-6 right-6 bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-lg transition z-40"

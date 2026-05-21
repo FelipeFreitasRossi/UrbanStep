@@ -6,22 +6,21 @@ import ProductCard from '../../components/ProductCard';
 import { Metadata } from 'next';
 
 interface PageProps {
-  params: {
-    nome: string;
-  };
+  params: Promise<{ nome: string }>;
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const nomeFormatado = decodeURIComponent(params.nome).replace(/-/g, ' ');
+  const { nome } = await params;
+  const nomeFormatado = decodeURIComponent(nome).replace(/-/g, ' ');
   return {
     title: `${nomeFormatado} | UrbanStep`,
   };
 }
 
-export default function CategoriaPage({ params }: PageProps) {
-  const nomeCategoria = decodeURIComponent(params.nome).replace(/-/g, ' ');
+export default async function CategoriaPage({ params }: PageProps) {
+  const { nome } = await params;
+  const nomeCategoria = decodeURIComponent(nome).replace(/-/g, ' ');
   
-  // Filtra produtos pela categoria (case insensitive)
   const produtosFiltrados = produtos.filter(
     p => p.categoria.toLowerCase() === nomeCategoria.toLowerCase()
   );
