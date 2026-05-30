@@ -26,7 +26,7 @@ export default async function ProdutoPage({ params }: PageProps) {
   if (!produto) notFound();
 
   const whatsappMessage = `Olá! Tenho interesse no ${produto.nome} (R$ ${produto.preco.toFixed(2)}).`;
-  const whatsappUrl = `https://wa.me/5511999999999?text=${encodeURIComponent(whatsappMessage)}`;
+  const whatsappUrl = `https://wa.me/5516996167381?text=${encodeURIComponent(whatsappMessage)}`;
 
   return (
     <div className="min-h-screen flex flex-col">

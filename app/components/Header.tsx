@@ -60,11 +60,11 @@ const Header = () => {
   }, []);
 
   const navLinks = [
-    { href: '/inicio', label: 'Início' },
-    { href: '/inicio#destaques', label: 'Destaques' },
-    { href: '/inicio#categorias', label: 'Categorias' },
-    { href: '/sobre', label: 'Sobre' },
-    { href: '/contato', label: 'Contato' },
+  { href: '/inicio', label: 'Início' },
+  { href: '/inicio#destaques', label: 'Destaques' },
+  { href: '/categorias', label: 'Categorias' },
+  { href: '/sobre', label: 'Sobre' },
+  { href: '/contato', label: 'Contato' },
   ];
 
   const isActive = (href: string) => {
@@ -96,7 +96,7 @@ const Header = () => {
       .map(i => `${i.nome} x${i.quantidade} = R$ ${(i.preco * i.quantidade).toFixed(2)}`)
       .join('\n');
     const total = totalPrice.toFixed(2);
-    const whatsappUrl = `https://wa.me/5511999999999?text=${encodeURIComponent(
+    const whatsappUrl = `https://wa.me/5516996167381?text=${encodeURIComponent(
       `Olá! Gostaria de comprar:\n${message}\nTotal: R$ ${total}`
     )}`;
     window.open(whatsappUrl, '_blank');

@@ -107,13 +107,13 @@ export default function InicioPage() {
     return matchName && matchCat && matchPrice;
   });
 
-  // ✅ URL da imagem 3D substituída por uma que funciona (mesma do Air Force)
-  const imagem3DUrl = 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80';
+  // URL da imagem 3D
+  const imagem3DUrl = 'https://i.postimg.cc/tgVPqDrn/Tenis-Dunk-Marrom.png';
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-black">
       <Header />
-      <main className="flex-grow pt-20">
+      <main className="flex-grow"> {/* SEM padding-top, completamente grudado */}
         {/* Hero Section */}
         <section id="hero" className="relative h-screen flex items-center justify-center overflow-hidden">
           <div className="absolute inset-0 z-0">
@@ -324,7 +324,7 @@ export default function InicioPage() {
 
       {/* Botão flutuante WhatsApp */}
       <a
-        href="https://wa.me/5511999999999"
+        href="https://wa.me/5516996167381"
         target="_blank"
         rel="noopener noreferrer"
         className="fixed bottom-6 right-6 bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-lg transition z-40"

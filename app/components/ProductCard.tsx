@@ -1,26 +1,20 @@
+// app/components/ProductCard.tsx
 'use client';
-
 import Image from 'next/image';
 import Link from 'next/link';
-import { Produto } from '../data/produtos';
 import { motion } from 'framer-motion';
+import { Produto } from '../data/produtos';
 
-interface ProductCardProps {
-  produto: Produto;
-}
-
-export default function ProductCard({ produto }: ProductCardProps) {
+export default function ProductCard({ produto }: { produto: Produto }) {
   return (
     <motion.div
       whileHover={{ y: -10, scale: 1.02 }}
       transition={{ type: 'spring', stiffness: 300 }}
       className="bg-white rounded-2xl shadow-lg overflow-hidden h-full flex flex-col relative group"
     >
-      {/* Selo Nike */}
       <div className="absolute top-2 left-2 z-10 bg-black text-white text-xs font-bold px-2 py-1 rounded">
         NIKE
       </div>
-      {/* Imagem com zoom no hover */}
       <div className="relative h-64 w-full overflow-hidden">
         <Image
           src={produto.imagem}
